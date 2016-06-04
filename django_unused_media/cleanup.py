@@ -61,10 +61,12 @@ def _get_all_media(exclude=[]):
     media = []
 
     for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+        base = os.path.relpath(root, settings.MEDIA_ROOT)
         for name in files:
+            relname = os.path.join(base, name)
             in_exclude = False
             for e in exclude:
-                if re.match(r'^%s$' % re.escape(e).replace('\\*', '.*'), name):
+                if re.match(r'^%s$' % re.escape(e).replace('\\*', '.*'), relname):
                     in_exclude = True
                     break
 
